@@ -67,6 +67,57 @@ const sendVerificationEmail = async (email, name, token) => {
   }
 };
 
+// Send password reset email (with link)
+const sendPasswordResetEmail = async (email, name, resetUrl) => {
+  const mailOptions = {
+    from: `"Kapee Team" <${process.env.MAIL_USER}>`,
+    to: email,
+    subject: 'Reset Your Password - Kapee',
+    html: `
+      <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
+        <div style="background: linear-gradient(135deg, #F59E0B, #D97706); padding: 40px 20px; text-align: center;">
+          <h1 style="color: white; margin: 0; font-size: 28px;">Password Reset</h1>
+        </div>
+        
+        <div style="padding: 40px 20px; background: #f8f9fa;">
+          <h2 style="color: #333; margin-bottom: 20px;">Hi ${name},</h2>
+          <p style="color: #666; font-size: 16px; line-height: 1.6;">
+            We received a request to reset your password. Click the button below to set a new password. This link will expire in 1 hour.
+          </p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${resetUrl}"
+               style="background: #111827; color: #F59E0B; padding: 12px 30px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">
+              Reset Password
+            </a>
+          </div>
+          <p style="color: #666; font-size: 14px;">
+            If the button doesn't work, copy and paste this link into your browser:
+          </p>
+          <p style="color: #2563EB; font-size: 14px; word-break: break-all;">
+            ${resetUrl}
+          </p>
+          <p style="color: #666; font-size: 14px; margin-top: 30px;">
+            If you didn't request a password reset, please ignore this email.
+          </p>
+          <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #e5e7eb; text-align: center;">
+            <p style="color: #999; font-size: 14px; margin: 0;">
+              © 2024 Kapee. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </div>
+    `
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log(`Password reset email sent to ${email}`);
+  } catch (error) {
+    console.error('Error sending password reset email:', error);
+    throw error;
+  }
+};
+
 // Send order confirmation email
 const sendOrderConfirmationEmail = async (email, name, order) => {
   const mailOptions = {
@@ -126,5 +177,6 @@ const sendOrderConfirmationEmail = async (email, name, order) => {
 
 module.exports = {
   sendVerificationEmail,
+  sendPasswordResetEmail,
   sendOrderConfirmationEmail
 };

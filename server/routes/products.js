@@ -3,7 +3,35 @@ const pool = require('../db/connection');
 
 const router = express.Router();
 
-// Get all products
+/**
+ * @swagger
+ * tags:
+ *   name: Products
+ *   description: Product management and search
+ */
+
+/**
+ * @swagger
+ * /api/products:
+ *   get:
+ *     summary: Get all products
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: List of all products
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.get('/', async (req, res) => {
   try {
     const client = await pool.connect();

@@ -4,12 +4,15 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const passport = require('passport');
 const session = require('express-session');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpecs = require('./config/swagger');
 require('dotenv').config();
 
 // Log environment variables for debugging
 console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'Set' : 'Not set');
 console.log('GOOGLE_CLIENT_ID:', process.env.GOOGLE_CLIENT_ID ? 'Set' : 'Not set');
 console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'Set' : 'Not set');
+console.log('CLOUDINARY_CLOUD_NAME:', process.env.CLOUDINARY_CLOUD_NAME ? 'Set' : 'Not set');
 // Import routes
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
@@ -49,6 +52,13 @@ app.use(passport.session());
 
 // Import passport configuration
 require('./config/passport');
+
+// Swagger Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, {
+  explorer: true,
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Kapee API Documentation'
+}));
 
 // Routes
 app.use('/api/auth', authRoutes);
