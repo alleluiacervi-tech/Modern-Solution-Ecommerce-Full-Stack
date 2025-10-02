@@ -44,10 +44,26 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* Top Utility Bar */}
+      <div className="fixed top-6 left-0 right-0 z-40 bg-yellow-400/80 backdrop-blur supports-[backdrop-filter]:bg-yellow-400/70 border-b border-black/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-8 flex items-center justify-between text-xs font-bold text-black">
+          <div className="hidden md:flex items-center space-x-4">
+            <button className="px-2 py-1 rounded-md hover:bg-yellow-300">ENGLISH</button>
+            <span className="text-black/40">|</span>
+            <button className="px-2 py-1 rounded-md hover:bg-yellow-300">$ DOLLAR (US)</button>
+          </div>
+          <div className="flex items-center space-x-6">
+            <Link to="/" className="hover:underline">Blog</Link>
+            <Link to="/" className="hover:underline">FAQ</Link>
+            <Link to="/" className="hover:underline">Contact Us</Link>
+          </div>
+        </div>
+      </div>
+
       {/* Main Navbar */}
-      <nav className="fixed top-6 left-0 right-0 z-40 bg-yellow-500 shadow-lg">
+      <nav className="fixed top-14 left-0 right-0 z-40 bg-yellow-500 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-12">
+          <div className="grid grid-cols-12 gap-4 items-center h-16">
             <div className="flex items-center">
               <Link to="/" className="flex-shrink-0 flex items-center">
                 <div className="h-8 w-8 bg-black rounded-lg flex items-center justify-center">
@@ -56,18 +72,28 @@ const Navbar = () => {
                 <span className="ml-2 text-xl font-bold text-black">apee</span>
               </Link>
             </div>
+            {/* Search */}
+            <div className="hidden md:flex col-span-7 items-center">
+              <div className="w-full grid grid-cols-12">
+                <button className="col-span-3 bg-black/10 text-black font-bold text-sm px-3 rounded-l-lg border border-black/20 hover:bg-black/20">
+                  All Categories
+                </button>
+                <input
+                  type="text"
+                  placeholder="Search for products, categories, brands, sku..."
+                  className="col-span-7 h-10 px-4 border-t border-b border-black/20 focus:outline-none"
+                />
+                <button className="col-span-2 bg-black text-yellow-400 font-bold rounded-r-lg hover:bg-gray-900">
+                  Search
+                </button>
+              </div>
+            </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
-              <Link to="/" className="text-black hover:text-gray-800 px-3 py-2 text-sm font-bold transition-colors">
-                Home
-              </Link>
-              <Link to="/shop" className="text-black hover:text-gray-800 px-3 py-2 text-sm font-bold transition-colors">
-                Shop
-              </Link>
-              
+            {/* Desktop Navigation & User Area */}
+            <div className="hidden md:flex col-span-4 items-center justify-end space-x-6">
+              <Link to="/" className="text-black hover:text-gray-800 text-sm font-bold">Home</Link>
+              <Link to="/shop" className="text-black hover:text-gray-800 text-sm font-bold">Shop</Link>
               <ThemeToggle />
-              
               <Link to="/cart" className="relative p-2 text-black hover:text-gray-800 transition-colors">
                 <ShoppingCart className="h-6 w-6" />
                 {cartItemCount > 0 && (
@@ -86,47 +112,27 @@ const Navbar = () => {
                     <User className="h-6 w-6" />
                     <span className="text-sm font-bold">{user?.name}</span>
                   </button>
-
                   {dropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
-                      <Link
-                        to="/profile"
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-yellow-100 font-medium"
-                        onClick={() => setDropdownOpen(false)}
-                      >
+                      <Link to="/profile" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-yellow-100 font-medium" onClick={() => setDropdownOpen(false)}>
                         <User className="h-4 w-4 mr-2" />
                         Profile
                       </Link>
-                      <Link
-                        to="/dashboard"
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-yellow-100 font-medium"
-                        onClick={() => setDropdownOpen(false)}
-                      >
+                      <Link to="/dashboard" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-yellow-100 font-medium" onClick={() => setDropdownOpen(false)}>
                         <Settings className="h-4 w-4 mr-2" />
                         Dashboard
                       </Link>
-                      <Link
-                        to="/orders"
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-yellow-100 font-medium"
-                        onClick={() => setDropdownOpen(false)}
-                      >
+                      <Link to="/orders" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-yellow-100 font-medium" onClick={() => setDropdownOpen(false)}>
                         <Settings className="h-4 w-4 mr-2" />
                         Order History
                       </Link>
                       {user?.role === 'admin' && (
-                        <Link
-                          to="/admin"
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-yellow-100 font-medium"
-                          onClick={() => setDropdownOpen(false)}
-                        >
+                        <Link to="/admin" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-yellow-100 font-medium" onClick={() => setDropdownOpen(false)}>
                           <Settings className="h-4 w-4 mr-2" />
                           Admin Dashboard
                         </Link>
                       )}
-                      <button
-                        onClick={handleLogout}
-                        className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-yellow-100 font-medium"
-                      >
+                      <button onClick={handleLogout} className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-yellow-100 font-medium">
                         <LogOut className="h-4 w-4 mr-2" />
                         Logout
                       </button>
@@ -135,18 +141,8 @@ const Navbar = () => {
                 </div>
               ) : (
                 <div className="flex items-center space-x-4">
-                  <Link
-                    to="/login"
-                    className="text-black hover:text-gray-800 px-3 py-2 text-sm font-bold transition-colors"
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="bg-black text-yellow-400 hover:bg-gray-800 px-4 py-2 rounded-lg text-sm font-bold transition-colors"
-                  >
-                    Register
-                  </Link>
+                  <Link to="/login" className="text-black hover:text-gray-800 px-3 py-2 text-sm font-bold transition-colors">Login</Link>
+                  <Link to="/register" className="bg-black text-yellow-400 hover:bg-gray-800 px-4 py-2 rounded-lg text-sm font-bold transition-colors">Register</Link>
                 </div>
               )}
             </div>

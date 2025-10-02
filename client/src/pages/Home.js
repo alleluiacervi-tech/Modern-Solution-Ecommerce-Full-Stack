@@ -98,42 +98,72 @@ const Home = () => {
         }
       `}</style>
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-primary-600 to-primary-800 text-white">
-        <div
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24"
-          style={{
-            backgroundImage: `url(${imageUrls[currentImageIndex]})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            transition: 'background-image 1s ease-in-out',
-          }}
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 text-blue-600 drop-shadow-lg">
-                Welcome to Kapee
-              </h1>
-              <p className="text-xl mb-8 opacity-90 text-white drop-shadow-lg">
-                Discover amazing products at unbeatable prices. Shop with confidence
-                and enjoy fast, reliable delivery right to your door.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/shop" className="btn bg-white text-primary-600 hover:bg-gray-100">
-                  <ShoppingBag className="h-5 w-5 mr-2" />
-                  Shop Now
-                </Link>
-                <Link to="/register" className="btn btn-secondary border-white text-white hover:bg-white hover:text-primary-600">
-                  Join Kapee
-                </Link>
+      {/* Kapee-like Main Row: Categories + Hero + Promo tiles */}
+      <section className="relative bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Categories Sidebar */}
+            <aside className="lg:col-span-3 hidden lg:block">
+              <div className="border rounded-lg overflow-hidden">
+                <div className="px-4 py-3 bg-yellow-500 text-black font-extrabold">SHOP BY CATEGORIES</div>
+                <ul className="divide-y">
+                  {[
+                    'Men\'s Clothing',
+                    'Women\'s Clothing',
+                    'Accessories',
+                    'Shoes',
+                    'Jewelry',
+                    'Bags & Backpacks',
+                    'Watches',
+                    'Electronics',
+                  ].map((c) => (
+                    <li key={c}>
+                      <Link to={`/shop?category=${encodeURIComponent(c)}`} className="flex items-center justify-between px-4 py-3 hover:bg-gray-50">
+                        <span className="text-sm font-medium text-gray-800">{c}</span>
+                        <span className="text-gray-400">›</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </aside>
+
+            {/* Hero Slider */}
+            <div className="lg:col-span-6">
+              <div
+                className="h-72 md:h-96 w-full rounded-lg overflow-hidden shadow-xl"
+                style={{
+                  backgroundImage: `url(${imageUrls[currentImageIndex]})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  transition: 'background-image 1s ease-in-out',
+                }}
+              >
+                <div className="h-full w-full bg-black/30 flex flex-col items-start justify-center p-8">
+                  <h1 className="text-3xl md:text-5xl font-extrabold text-white drop-shadow">Seamless online shopping Experience</h1>
+                  <p className="mt-3 text-white/90 max-w-lg">Premium sound. Exclusive deals. Upgrade your gear today.</p>
+                  <div className="mt-6 flex gap-3">
+                    <Link to="/shop" className="bg-yellow-500 text-black px-5 py-2 rounded-lg font-bold hover:bg-yellow-400">
+                      <ShoppingBag className="inline h-4 w-4 mr-2" />Shop Now
+                    </Link>
+                    <Link to="/register" className="border border-white text-white px-5 py-2 rounded-lg font-bold hover:bg-white hover:text-black">
+                      Join Kapee
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="hidden lg:block">
-              <img
-                src={imageUrls[currentImageIndex]}
-                alt="Shopping"
-                className="rounded-lg shadow-2xl"
-              />
+
+            {/* Promo Tiles */}
+            <div className="lg:col-span-3 grid grid-rows-2 gap-6">
+              <Link to="/shop" className="block rounded-lg overflow-hidden shadow-md group">
+                <div className="h-32 bg-cover bg-center" style={{ backgroundImage: `url(${productShowcaseImages[(productCarouselIndex+1)%productShowcaseImages.length]})` }}></div>
+                <div className="p-4 bg-black text-yellow-400 font-bold group-hover:bg-gray-900">Summer Sale -40%</div>
+              </Link>
+              <Link to="/shop" className="block rounded-lg overflow-hidden shadow-md group">
+                <div className="h-32 bg-cover bg-center" style={{ backgroundImage: `url(${productShowcaseImages[(productCarouselIndex+2)%productShowcaseImages.length]})` }}></div>
+                <div className="p-4 bg-yellow-500 text-black font-extrabold group-hover:bg-yellow-400">New Arrivals</div>
+              </Link>
             </div>
           </div>
         </div>

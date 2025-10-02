@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Search, Filter } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import useStore from '../store/useStore';
@@ -6,12 +7,20 @@ import useStore from '../store/useStore';
 const Shop = () => {
   const { products, fetchProducts } = useStore();
   const [searchTerm, setSearchTerm] = useState('');
-  const [category, setCategory] = useState('');
+  const location = useLocation();
+  const initialCategory = useMemo(() => new URLSearchParams(location.search).get('category') || '', [location.search]);
+  const [category, setCategory] = useState(initialCategory);
   const [sortBy, setSortBy] = useState('name');
 
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
+
+  // keep category in sync with URL changes
+  useEffect(() => {
+    const catFromUrl = new URLSearchParams(location.search).get('category') || '';
+    setCategory(catFromUrl);
+  }, [location.search]);
 
   const filteredProducts = products
     .filter(product => 

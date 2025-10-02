@@ -28,9 +28,14 @@ const Cart = () => {
       const response = await axios.post('/api/orders', orderData);
       
       if (response.data.success) {
+        const order = response.data.order;
         clearCart();
-        alert('Order placed successfully!');
-        navigate('/orders');
+        navigate('/payment', { 
+          state: { 
+            order: order, 
+            total: total 
+          } 
+        });
       }
     } catch (error) {
       alert('Error placing order: ' + (error.response?.data?.message || 'Something went wrong'));

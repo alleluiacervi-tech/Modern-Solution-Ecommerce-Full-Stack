@@ -40,6 +40,7 @@ const AdminSidebar = () => {
   const menuItems = [
     { path: '/admin', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/admin/products', label: 'Products', icon: Package },
+    { path: '/admin/payroll', label: 'Payroll', icon: DollarSign },
     { path: '/admin/orders', label: 'Orders', icon: ShoppingCart },
     { path: '/admin/users', label: 'Users', icon: Users },
     { path: '/admin/settings', label: 'Settings', icon: Settings },
@@ -400,6 +401,8 @@ const ProductManagement = () => {
     category: '',
     image_url: ''
   });
+  const [mediaFile, setMediaFile] = useState(null);
+  const [mediaType, setMediaType] = useState('image');
 
   useEffect(() => {
     fetchProducts();
@@ -417,13 +420,30 @@ const ProductManagement = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    const data = new FormData();
+    data.append('title', formData.title);
+    data.append('description', formData.description);
+    data.append('price', formData.price);
+    data.append('stock', formData.stock);
+    data.append('category', formData.category);
+    if (mediaFile) {
+      data.append('media', mediaFile);
+      data.append('mediaType', mediaType);
+    } else if (formData.image_url) {
+      // allow retaining existing URL on edit
+      data.append('image_url', formData.image_url);
+    }
+
     try {
       if (editingProduct) {
-        await axios.put(`/api/admin/products/${editingProduct.id}`, formData);
+        await axios.put(`/api/admin/products/${editingProduct.id}`, data, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
         toast.success('Product updated successfully');
       } else {
-        await axios.post('/api/admin/products', formData);
+        await axios.post('/api/admin/products', data, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
         toast.success('Product created successfully');
       }
       
@@ -461,6 +481,8 @@ const ProductManagement = () => {
         image_url: ''
       });
     }
+    setMediaFile(null);
+    setMediaType('image');
     setShowModal(true);
   };
 
@@ -624,25 +646,47 @@ const ProductManagement = () => {
                 <label className="block text-sm font-medium text-gray-300 mb-1">
                   Category
                 </label>
-                <input
-                  type="text"
+                <select
                   required
                   className="w-full px-3 py-2 border border-yellow-400 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent bg-gray-800 text-white"
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                />
+                >
+                  <option value="">Select a Category</option>
+                  <option>Men's Clothing</option>
+                  <option>Women's Clothing</option>
+                  <option>Accessories</option>
+                  <option>Shoes</option>
+                  <option>Jewelry</option>
+                  <option>Bags & Backpacks</option>
+                  <option>Watches</option>
+                  <option>Electronics</option>
+                </select>
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-1">
-                  Image URL
+                  Media (Photo or Video)
                 </label>
+                <div className="flex items-center space-x-3 mb-2">
+                  <label className="flex items-center space-x-2 text-gray-300">
+                    <input type="radio" name="mediatype" checked={mediaType==='image'} onChange={() => setMediaType('image')} />
+                    <span>Image</span>
+                  </label>
+                  <label className="flex items-center space-x-2 text-gray-300">
+                    <input type="radio" name="mediatype" checked={mediaType==='video'} onChange={() => setMediaType('video')} />
+                    <span>Video</span>
+                  </label>
+                </div>
                 <input
-                  type="url"
-                  className="w-full px-3 py-2 border border-yellow-400 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent bg-gray-800 text-white"
-                  value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                  type="file"
+                  accept={mediaType==='image' ? 'image/*' : 'video/*'}
+                  onChange={(e) => setMediaFile(e.target.files?.[0] || null)}
+                  className="w-full px-3 py-2 border border-yellow-400 rounded-lg bg-gray-800 text-white"
                 />
+                {editingProduct && !mediaFile && formData.image_url && (
+                  <p className="text-xs text-gray-400 mt-2">Keeping existing media. Upload a new file to replace.</p>
+                )}
               </div>
               
               <div className="flex justify-end space-x-4 mt-6">
@@ -882,6 +926,79 @@ const UserManagement = () => {
   );
 };
 
+const PayrollPage = () => {
+  const [rows, setRows] = useState([{ phone: '', amount: '' }]);
+  const [submitting, setSubmitting] = useState(false);
+
+  const addRow = () => setRows([...rows, { phone: '', amount: '' }]);
+  const removeRow = (idx) => setRows(rows.filter((_, i) => i !== idx));
+
+  const updateRow = (idx, key, value) => {
+    const next = [...rows];
+    next[idx][key] = value;
+    setRows(next);
+  };
+
+  const submit = async () => {
+    const payouts = rows
+      .filter(r => r.phone && r.amount)
+      .map(r => ({ phone: r.phone, amount: r.amount, note: 'Payroll' }));
+    if (payouts.length === 0) {
+      toast.error('Please add at least one valid row.');
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const { data } = await axios.post('/api/admin/payroll/payouts', { payouts });
+      toast.success(`Initiated ${data.results.length} payout(s).`);
+    } catch (e) {
+      toast.error(e.response?.data?.message || 'Failed to initiate payouts');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="p-6 bg-gray-100 min-h-full">
+      <h2 className="text-2xl font-bold text-black mb-6">Payroll (MTN MoMo Sandbox)</h2>
+      <div className="bg-black rounded-xl p-6 border border-yellow-400">
+        <div className="space-y-4">
+          {rows.map((r, idx) => (
+            <div key={idx} className="grid grid-cols-12 gap-3">
+              <input
+                className="col-span-5 px-3 py-2 border border-yellow-400 rounded-lg bg-gray-800 text-white"
+                placeholder="Phone (e.g. 2507XXXXXXXX)"
+                value={r.phone}
+                onChange={(e) => updateRow(idx, 'phone', e.target.value)}
+              />
+              <input
+                className="col-span-5 px-3 py-2 border border-yellow-400 rounded-lg bg-gray-800 text-white"
+                placeholder="Amount"
+                type="number"
+                step="0.01"
+                value={r.amount}
+                onChange={(e) => updateRow(idx, 'amount', e.target.value)}
+              />
+              <div className="col-span-2 flex gap-2">
+                <button onClick={addRow} className="flex-1 bg-yellow-400 text-black px-3 rounded-lg hover:bg-yellow-500">Add</button>
+                {rows.length > 1 && (
+                  <button onClick={() => removeRow(idx)} className="flex-1 bg-gray-700 text-white px-3 rounded-lg hover:bg-gray-600">Remove</button>
+                )}
+              </div>
+            </div>
+          ))}
+          <div className="pt-2">
+            <button onClick={submit} disabled={submitting} className="px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-black rounded-lg font-medium">
+              {submitting ? 'Submitting...' : 'Submit Payouts'}
+            </button>
+            <p className="text-xs text-gray-400 mt-3">This uses MTN MoMo sandbox disbursement; real money is not moved. Ensure server .env has MOMO_SUBSCRIPTION_KEY, MOMO_API_USER, MOMO_API_KEY.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex">
@@ -894,6 +1011,7 @@ const AdminDashboard = () => {
           <Routes>
             <Route path="/" element={<AdminStats />} />
             <Route path="/products" element={<ProductManagement />} />
+            <Route path="/payroll" element={<PayrollPage />} />
             <Route path="/orders" element={<OrderManagement />} />
             <Route path="/users" element={<UserManagement />} />
             <Route path="/settings" element={
