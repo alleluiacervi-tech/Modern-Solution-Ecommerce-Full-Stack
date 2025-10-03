@@ -40,29 +40,29 @@ const Home = () => {
     "https://media.istockphoto.com/id/1428709516/photo/shopping-online-woman-hand-online-shopping-on-laptop-computer-with-virtual-graphic-icon.jpg?s=1024x1024&w=is&k=20&c=N5Fw7BZfKcYJMH9camA7rQ3q--7Ev7pKlQYEB_gPfo8=",
     "https://i.pinimg.com/1200x/df/d6/7c/dfd67c53823c56cef3954336039d346c.jpg",
     "https://i.pinimg.com/736x/dc/73/2a/dc732ae5b28015fe0790ce89085a8b3b.jpg",
-    "https://images.unsplash.com/photo-1664455340023-214c33a9d0bd?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://i.pinimg.com/736x/13/a9/9c/13a99cc7ae16f759b9a9ec6ffad1591a.jpg",
   ];
 
   // Product showcase images for the dynamic section
   const productShowcaseImages = [
-    "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop",
+    "https://i.pinimg.com/736x/fc/0f/da/fc0fda43f76d77b1e2d1566e62e5b31c.jpg",
     "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=300&fit=crop",
-    "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop",
-    "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
-    "https://images.unsplash.com/photo-1503602642458-232111445657?w=400&h=300&fit=crop",
-    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop",
-    "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=300&fit=crop",
-    "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400&h=300&fit=crop"
+    "https://i.pinimg.com/1200x/e2/84/ea/e284eab29d3f3308e25d9d4823be6606.jpg",
+    "https://i.pinimg.com/1200x/fa/a4/76/faa476b16aa7acfa6c3297a77c8afdbf.jpg",
+    "https://i.pinimg.com/736x/38/65/94/386594135756b1c8572b20991e9dd963.jpg",
+    "https://i.pinimg.com/1200x/7b/9a/98/7b9a981747c8d3bb8dceb5aa946cd046.jpg",
+    "https://i.pinimg.com/1200x/37/af/07/37af0765eeb3d0dde512ea8fd49807d1.jpg",
+    "https://i.pinimg.com/736x/4e/a1/90/4ea1903732c676930013b06d260f86f2.jpg"
   ];
 
   // Different product images for features section
   const featureProductImages = [
-    "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=200&fit=crop"
+    "https://i.pinimg.com/1200x/ef/2d/c4/ef2dc4bc71dc9f0fc7ef8164b0b7f713.jpg",
+    "https://i.pinimg.com/736x/b8/24/9b/b8249bf0063174297648d3c9d01ac234.jpg",
+    "https://i.pinimg.com/736x/dd/6e/48/dd6e4805d28c2661e1dc286dfbca1c9b.jpg",
+    "https://i.pinimg.com/1200x/e7/ac/5d/e7ac5d871d5a938c45a186c285d254a3.jpg",
+    "https://i.pinimg.com/736x/d3/df/88/d3df888df80b1d56958fd21f2bffe1fd.jpg",
+    "https://i.pinimg.com/736x/0e/35/d5/0e35d575b5c849524b982ee50527588f.jpg"
   ];
 
   const featuredProducts = products.slice(0, 8);
