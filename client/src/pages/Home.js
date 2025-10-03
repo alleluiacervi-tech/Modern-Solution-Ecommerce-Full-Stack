@@ -62,7 +62,7 @@ const Home = () => {
     "https://i.pinimg.com/736x/dd/6e/48/dd6e4805d28c2661e1dc286dfbca1c9b.jpg",
     "https://i.pinimg.com/1200x/e7/ac/5d/e7ac5d871d5a938c45a186c285d254a3.jpg",
     "https://i.pinimg.com/736x/d3/df/88/d3df888df80b1d56958fd21f2bffe1fd.jpg",
-    "https://i.pinimg.com/736x/0e/35/d5/0e35d575b5c849524b982ee50527588f.jpg"
+    "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=200&fit=crop"
   ];
 
   const featuredProducts = products.slice(0, 8);
