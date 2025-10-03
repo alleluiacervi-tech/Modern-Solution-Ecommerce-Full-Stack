@@ -9,10 +9,10 @@ import {
   Package,
   User,
   Heart,
-  Settings,
-  Bell,
-  CreditCard,
-  MapPin
+  // Settings,
+  // Bell,
+  // CreditCard,
+  // MapPin
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import useStore from '../store/useStore';
